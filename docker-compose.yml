@@ -1,0 +1,36 @@
+services:
+  db-menuproject:
+    image: postgres:12
+    container_name: db-menuproject
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: menuproject
+    networks:
+      - menuproject-network
+    ports:
+      - 8080:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      timeout: 30s
+      retries: 5
+  api-menuproject:
+    build:
+      context: ./backend/menuproject
+      dockerfile: Dockerfile
+    image: openjdk:17-jdk-alpine
+    container_name: api-menuproject
+    depends_on:
+      db-menuproject:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-menuproject:8080/menuproject?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    networks:
+      - menuproject-network
+    ports:
+      - 9091:8080
+networks:
+  menuproject-network:
+    external: true
