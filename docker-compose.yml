@@ -24,7 +24,7 @@ services:
       db-menuproject:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db-menuproject:8080/menuproject?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-menuproject:5432/menuproject?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     networks:
