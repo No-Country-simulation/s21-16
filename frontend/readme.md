@@ -1,4 +1,5 @@
-# React + Vite
+## React + Vite
+
 FoodieScan
 
 FoodieScan es una aplicación que permite a los restaurantes gestionar sus menús de manera digital. Ofrece autenticación, creación y edición de menús, generación de códigos QR únicos por restaurante y generación de menús en PDF para impresión.
@@ -6,13 +7,13 @@ FoodieScan es una aplicación que permite a los restaurantes gestionar sus menú
 Instalación
 
 1. Clonar el repositorio:
-https://github.com/No-Country-simulation/s21-16.git
+   https://github.com/No-Country-simulation/s21-16.git
 
 2. Crear el proyecto con Vite:
-npm create vite@latest FoodieScan -- --template react
+   npm create vite@latest FoodieScan -- --template react
 
 3. Instalar dependencias:
-npm install
+   npm install
 
 ✨ Funcionalidades Principales
 
