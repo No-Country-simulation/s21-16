@@ -1,4 +1,3 @@
-import React from "react";
 import HeroSection from "../components/HeroSection/HeroSection";
 import Benefits from "../components/Benefits/Benefits";
 import Functionalities from "../components/Functionalities/Functionalities";
