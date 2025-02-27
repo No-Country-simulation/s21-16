@@ -4,6 +4,7 @@ import HeroSection from "./components/HeroSection/HeroSection";
 import Functionalities from "./components/Functionalities/Functionalities";
 import Beneffits from "./components/Benefits/Benefits";
 import MenuDemo from "./components/MenuDemo/MenuDemo";
+import Menu from './components/MenuDemo/Menu/Menu'; // Asegúrate de que esta ruta sea correcta
 import Reviews from "./components/Reviews/Reviews";
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
             </>
           }
         />
+        <Route path="/menuDemo" element={<Menu />} />
       </Routes>
     </Router>
   );
