@@ -6,9 +6,14 @@ import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import styles from "./LoginForm.module.css";
 import { loginSchema } from "../../schemas/authSchemas";
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const login = useAuthStore((state) => state.login);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -18,8 +23,33 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Datos del formulario:", data);
+
+    try {
+      const response = await fetch(`http://localhost:8080/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(`Bienvenido, ${result.user.name || "usuario"}!`);
+
+        login(result.token, result.user);
+
+        navigate("/dashboard");
+      } else {
+        alert(result.message || "Credenciales incorrectas.");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+    }
   };
 
   return (

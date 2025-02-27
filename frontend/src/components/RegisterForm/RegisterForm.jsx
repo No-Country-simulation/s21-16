@@ -6,9 +6,11 @@ import { TextField, IconButton, InputAdornment, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import styles from "./RegisterForm.module.css";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -18,8 +20,30 @@ const RegisterForm = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Datos del formulario:", data);
+  const onSubmit = async (data) => {
+    console.log("Datos del formulario", data);
+
+    try {
+      const response = await fetch(`http://localhost:8080/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
+        navigate("/signin");
+      } else {
+        alert(result.message || "Error al registrar el usuario.");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+    }
   };
 
   return (
