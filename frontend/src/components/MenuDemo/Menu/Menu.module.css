@@ -1,0 +1,85 @@
+.menuSection {
+    padding: 30px;
+    background-color: #f4f7f6;
+  }
+  
+  .title {
+    font-size: 3rem;
+    color: #003366;
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+  }
+  
+  .category {
+    margin-bottom: 50px;
+  }
+  
+  .categoryTitle {
+    font-size: 2rem;
+    color: #003366;
+    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .dish {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dishImage {
+    width: 200px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  .dishDetails {
+    flex: 1;
+    padding-left: 20px;
+  }
+  
+  .dishDescription {
+    color: #777;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .dishPrice {
+    font-size: 1.2rem;
+    color: #003366;
+    font-weight: bold;
+  }
+  
+  .dishIcons {
+    margin-top: 10px;
+  }
+  
+  .icon {
+    font-size: 1.5rem;
+    color: #0077cc;
+    margin-right: 15px;
+  }
+  
+  .icon:hover {
+    color: #005699;
+  }
+  
+  .dishDetails h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #003366;
+    margin-bottom: 10px;
+  }
+  
+  .dishDetails h4:hover {
+    color: #0077cc;
+  }
+  
