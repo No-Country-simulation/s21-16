@@ -4,8 +4,9 @@ import HeroSection from "./components/HeroSection/HeroSection";
 import Functionalities from "./components/Functionalities/Functionalities";
 import Beneffits from "./components/Benefits/Benefits";
 import MenuDemo from "./components/MenuDemo/MenuDemo";
-import Menu from './components/MenuDemo/Menu/Menu'; // Asegúrate de que esta ruta sea correcta
+import Menu from './components/MenuDemo/Menu/Menu'; 
 import Reviews from "./components/Reviews/Reviews";
+import CreateMenu from './components/HeroSection/CreateMenu/CreateMenu';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           }
         />
         <Route path="/menuDemo" element={<Menu />} />
+        <Route path="/creamenu" element={<CreateMenu />} />
       </Routes>
     </Router>
   );
