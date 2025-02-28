@@ -28,9 +28,9 @@ public class Business implements Serializable {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User idUser;
+//    @ManyToOne
+//    @JoinColumn(name = "id_user")
+//    private User idUser;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
