@@ -30,7 +30,7 @@ const CreateMenu = () => {
     } else {
       setUser(JSON.parse(loggedUser));
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
   const addCategory = () => {
     if (categories.length < 30) {
@@ -85,7 +85,10 @@ const CreateMenu = () => {
               onChange={(e) => updateCategory(catIndex, e.target.value)}
               className={styles.input}
             />
-            <button onClick={() => addDish(catIndex)} className={styles.addDishButton}>
+            <button
+              onClick={() => addDish(catIndex)}
+              className={styles.addDishButton}
+            >
               Agregar Plato
             </button>
             {category.dishes.map((dish, dishIndex) => (
@@ -94,26 +97,39 @@ const CreateMenu = () => {
                   type="text"
                   placeholder="Nombre del Plato"
                   value={dish.name}
-                  onChange={(e) => updateDish(catIndex, dishIndex, "name", e.target.value)}
+                  onChange={(e) =>
+                    updateDish(catIndex, dishIndex, "name", e.target.value)
+                  }
                   className={styles.input}
                 />
                 <input
                   type="file"
                   accept=".jpg,.png"
-                  onChange={(e) => updateDish(catIndex, dishIndex, "image", e.target.files[0])}
+                  onChange={(e) =>
+                    updateDish(catIndex, dishIndex, "image", e.target.files[0])
+                  }
                   className={styles.fileInput}
                 />
                 <input
                   type="number"
                   placeholder="Precio en dólares"
                   value={dish.price}
-                  onChange={(e) => updateDish(catIndex, dishIndex, "price", e.target.value)}
+                  onChange={(e) =>
+                    updateDish(catIndex, dishIndex, "price", e.target.value)
+                  }
                   className={styles.input}
                 />
                 <textarea
                   placeholder="Descripción e ingredientes"
                   value={dish.description}
-                  onChange={(e) => updateDish(catIndex, dishIndex, "description", e.target.value)}
+                  onChange={(e) =>
+                    updateDish(
+                      catIndex,
+                      dishIndex,
+                      "description",
+                      e.target.value
+                    )
+                  }
                   className={styles.textarea}
                 />
               </div>
