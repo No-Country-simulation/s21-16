@@ -1,22 +1,18 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 
 function Ping() {
   return <h1>Pong</h1>;
 }
-import HeroSection from "./components/HeroSection/HeroSection";
-import Functionalities from "./components/Functionalities/Functionalities";
-import Beneffits from "./components/Benefits/Benefits";
-import MenuDemo from "./components/MenuDemo/MenuDemo";
+
 import Menu from './components/MenuDemo/Menu/Menu'; 
-import Reviews from "./components/Reviews/Reviews";
+
 import CreateMenu from './components/HeroSection/CreateMenu/CreateMenu';
 import './App.css';
-import Navbar from "./components/Navbar/Navbar";
-import Footer from "./components/Footer/Footer"
+
+import LandingPage from './templates/LandingPage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -26,18 +22,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <>
-              <Navbar/>
-              <HeroSection />
-              <Functionalities />
-              <Beneffits />
-              <MenuDemo />
-              <Reviews />
-              <Footer/>
-            </>
-          }
-        />
+          element={ <LandingPage/> } />
         <Route path="/menuDemo" element={<Menu />} />
         <Route path="/creamenu" element={<CreateMenu />} />
       </Routes>

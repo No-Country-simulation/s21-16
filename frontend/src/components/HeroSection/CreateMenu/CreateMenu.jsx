@@ -30,11 +30,7 @@ const CreateMenu = () => {
     } else {
       setUser(JSON.parse(loggedUser));
     }
-<<<<<<< HEAD
-  }, [navigate]);
-=======
   }, [user, navigate]);
->>>>>>> 63ef8677d3af80e1ed1f57f29ddf7ccaa1fe3ddc
 
   const addCategory = () => {
     if (categories.length < 30) {
@@ -89,14 +85,10 @@ const CreateMenu = () => {
               onChange={(e) => updateCategory(catIndex, e.target.value)}
               className={styles.input}
             />
-<<<<<<< HEAD
-            <button onClick={() => addDish(catIndex)} className={styles.addDishButton}>
-=======
             <button
               onClick={() => addDish(catIndex)}
               className={styles.addDishButton}
             >
->>>>>>> 63ef8677d3af80e1ed1f57f29ddf7ccaa1fe3ddc
               Agregar Plato
             </button>
             {category.dishes.map((dish, dishIndex) => (
@@ -105,46 +97,31 @@ const CreateMenu = () => {
                   type="text"
                   placeholder="Nombre del Plato"
                   value={dish.name}
-<<<<<<< HEAD
-                  onChange={(e) => updateDish(catIndex, dishIndex, "name", e.target.value)}
-=======
                   onChange={(e) =>
                     updateDish(catIndex, dishIndex, "name", e.target.value)
                   }
->>>>>>> 63ef8677d3af80e1ed1f57f29ddf7ccaa1fe3ddc
                   className={styles.input}
                 />
                 <input
                   type="file"
                   accept=".jpg,.png"
-<<<<<<< HEAD
-                  onChange={(e) => updateDish(catIndex, dishIndex, "image", e.target.files[0])}
-=======
                   onChange={(e) =>
                     updateDish(catIndex, dishIndex, "image", e.target.files[0])
                   }
->>>>>>> 63ef8677d3af80e1ed1f57f29ddf7ccaa1fe3ddc
                   className={styles.fileInput}
                 />
                 <input
                   type="number"
                   placeholder="Precio en dólares"
                   value={dish.price}
-<<<<<<< HEAD
-                  onChange={(e) => updateDish(catIndex, dishIndex, "price", e.target.value)}
-=======
                   onChange={(e) =>
                     updateDish(catIndex, dishIndex, "price", e.target.value)
                   }
->>>>>>> 63ef8677d3af80e1ed1f57f29ddf7ccaa1fe3ddc
                   className={styles.input}
                 />
                 <textarea
                   placeholder="Descripción e ingredientes"
                   value={dish.description}
-<<<<<<< HEAD
-                  onChange={(e) => updateDish(catIndex, dishIndex, "description", e.target.value)}
-=======
                   onChange={(e) =>
                     updateDish(
                       catIndex,
@@ -153,7 +130,6 @@ const CreateMenu = () => {
                       e.target.value
                     )
                   }
->>>>>>> 63ef8677d3af80e1ed1f57f29ddf7ccaa1fe3ddc
                   className={styles.textarea}
                 />
               </div>
