@@ -1,0 +1,102 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: linear-gradient(to bottom, #cce7ff, #ffffff);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #003366;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .addButton {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+  }
+  
+  .addButton:hover {
+    background-color: #004494;
+  }
+  
+  .category {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .addDishButton {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;
+    margin: 10px 0;
+  }
+  
+  .addDishButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .dishCard {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+  }
+  
+  .fileInput {
+    margin-top: 10px;
+  }
+  
+  .textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 600px) {
+    .container {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .addButton, .addDishButton {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  

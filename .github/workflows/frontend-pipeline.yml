@@ -1,0 +1,26 @@
+name: Frontend Pipeline
+on:
+  push:
+    paths:
+      - "frontend/**"
+  pull_request:
+    branches:
+      - "**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: rm -rf node_modules && rm -rf package-lock.json && npm install
+      - name: run lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
