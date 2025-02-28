@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import styles from "./createmenu.module.css";
+import styles from "./CreateMenu.module.css";
 import { useReactToPrint } from "react-to-print";
 
 const MySwal = withReactContent(Swal);
