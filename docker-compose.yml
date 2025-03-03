@@ -31,6 +31,23 @@ services:
       - menuproject-network
     ports:
       - 9091:8080
+  frontend-menuproject:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: node:20
+    container_name: frontend-menuproject
+    environment:
+      API: http://localhost:9091
+    ports:
+      - 5173:4500
+    networks:
+      - menuproject-network
+    depends_on:
+      db-menuproject:
+        condition: service_healthy
+      api-menuproject:
+        condition: service_started
 networks:
   menuproject-network:
-    external: true
+    driver: bridge
