@@ -13,9 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
@@ -33,21 +31,22 @@ public class User implements Serializable, UserDetails {
 
     @NotNull
     @Email
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotNull
     private String password;
 
     @NotNull
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber; // ¿Un usuario puede tener mas de una cuenta con su mismo numero?
 
-    @Column(name = "date_of_birth")
     @NotNull
+    @Column(name = "date_of_birth", nullable = false)
     private Date dateOfBirth;
 
     @NotNull
+    @Column(nullable = false)
     private String name;
 
 
