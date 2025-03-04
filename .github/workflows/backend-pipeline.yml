@@ -51,10 +51,8 @@ jobs:
         run: ./mvnw clean compile
       - name: view the compiled files
         run: find target/classes -type f
-      - name: Official SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.0.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Run SonarQube Analysis with Maven
+        run: mvn verify sonar:sonar -Dsonar.projectKey=fitito1234_menuproject -Dsonar.organization=fitito1234 -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       - name: SonarCloud Scan
         run: mvn verify sonar:sonar
     env:
