@@ -53,10 +53,10 @@ jobs:
         run: ls -l target/classes
       - name: Official SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.0.0
-      - name: SonarCloud Scan
-        run: mvn verify sonar:sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        run: mvn verify sonar:sonar
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
       SPRING_DATASOURCE_USERNAME: postgres
