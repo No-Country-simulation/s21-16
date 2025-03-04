@@ -45,8 +45,8 @@ jobs:
           maven-version: "3.8.4"
       - name: Wait for PostgreSQL
         run: sleep 10
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: Compile with Maven
+        run: ./mvnw clean compile
       - name: show directories
         run: ls -R
       - name: Official SonarQube Scan
