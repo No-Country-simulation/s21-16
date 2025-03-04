@@ -50,7 +50,7 @@ jobs:
       - name: Compile with Maven
         run: ./mvnw clean compile
       - name: view the compiled files
-        run: ls -l target/classes
+        run: find target/classes -type f
       - name: Official SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.0.0
         env:
