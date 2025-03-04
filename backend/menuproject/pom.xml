@@ -27,8 +27,6 @@
 		<url/>
 	</scm>
 	<properties>
-  <sonar.organization>fitito1234</sonar.organization>
-  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
@@ -83,7 +81,6 @@
 			<artifactId>java-jwt</artifactId>
 			<version>4.4.0</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
