@@ -49,8 +49,12 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Compile with Maven
         run: ./mvnw clean compile
+      - name: view the compiled files
+        run: ls -l target/classes
       - name: Official SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.0.0
+      - name: SonarCloud Scan
+        run: mvn verify sonar:sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     env:
