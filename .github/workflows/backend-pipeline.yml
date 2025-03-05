@@ -1,9 +1,13 @@
 name: Backend Pipeline
 on:
   push:
+    paths:
+      - "backend/**"
     branches:
       - "*"
   pull_request:
+    paths:
+      - "backend/**"
     branches:
       - "MS*"
 
@@ -43,20 +47,17 @@ jobs:
         uses: stCarolas/setup-maven@v4
         with:
           maven-version: "3.8.4"
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Wait for PostgreSQL
         run: sleep 10
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - name: Compile with Maven
-        run: ./mvnw clean compile
-      - name: view the compiled files
-        run: find target/classes -type f
-      - name: Official SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.0.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: SonarCloud Scan
-        run: mvn verify sonar:sonar
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
       SPRING_DATASOURCE_USERNAME: postgres
