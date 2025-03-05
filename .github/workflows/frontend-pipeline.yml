@@ -4,8 +4,10 @@ on:
     paths:
       - "frontend/**"
   pull_request:
+    paths:
+      - "frontend/**"
     branches:
-      - "**"
+      - "MS*"
 jobs:
   build:
     runs-on: ubuntu-latest

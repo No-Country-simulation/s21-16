@@ -3,9 +3,13 @@ on:
   push:
     paths:
       - "backend/**"
-  pull_request:
     branches:
-      - "**"
+      - "*"
+  pull_request:
+    paths:
+      - "backend/**"
+    branches:
+      - "MS*"
 
 jobs:
   build:
@@ -32,6 +36,8 @@ jobs:
         working-directory: ./backend/menuproject
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -41,6 +47,13 @@ jobs:
         uses: stCarolas/setup-maven@v4
         with:
           maven-version: "3.8.4"
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Wait for PostgreSQL
         run: sleep 10
       - name: Build with Maven
