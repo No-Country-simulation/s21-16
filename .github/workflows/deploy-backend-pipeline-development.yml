@@ -52,6 +52,7 @@ jobs:
           image-url: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
           render-api-key: ${{ secrets.RENDER_API_KEY }}
           wait-for-deployment: true
+          max-wait-time: 180
     env:
       SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_DEVELOPMENT_URL }}
       SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_DEVELOPMENT_USERNAME }}
