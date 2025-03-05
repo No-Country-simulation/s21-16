@@ -1,9 +1,8 @@
 package com.menuproject.menuproject.service.user;
 
-import com.menuproject.menuproject.dto.request.user.UserDto;
+import com.menuproject.menuproject.dto.request.user.UserRequestDto;
 import com.menuproject.menuproject.models.User;
 import com.menuproject.menuproject.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,28 +12,29 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements IUserservice {
 
-    //importamos el BCrypt para hashdear la contraseña.
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository){
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional
-    public void save(UserDto userDto) {
+    public void save(UserRequestDto userRequestDto) {
         //creamos usuario.
         User user = new User();
 
         //hasheamos la contracesa
-        String password =bCryptPasswordEncoder.encode(userDto.password());
+        String password =bCryptPasswordEncoder.encode(userRequestDto.password());
 
         //casteamos datos.
-        user.setName(userDto.name());
-        user.setEmail(userDto.email());
-        user.setDateOfBirth(userDto.dateOfBirth());
+        user.setName(userRequestDto.name());
+        user.setEmail(userRequestDto.email());
+        user.setDateOfBirth(userRequestDto.dateOfBirth());
         user.setPassword(password);
-        user.setPhoneNumber(userDto.phoneNumber());
+        user.setPhoneNumber(userRequestDto.phoneNumber());
 
         userRepository.save(user);
     }
@@ -51,12 +51,12 @@ public class UserServiceImpl implements IUserservice {
 
     @Override
     public void upDateUser(User user) {
-
+        // metodo vacio - para implementaciones futuras
     }
 
     @Override
     public void deleteUser(User user) {
-
+        // metodo vacio - para implementaciones futuras
     }
 
 

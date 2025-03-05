@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+.git
+.gitignore
+package-lock.json
+.env
+.vscode
+.idea
+*.log

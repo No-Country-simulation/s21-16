@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 
 import java.util.Date;
 
-public record UserDto(
+public record UserRequestDto(
         @NotNull(message = "Introduzca su nombre")
         String name,
 
