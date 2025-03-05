@@ -7,7 +7,7 @@ on:
     paths:
       - "frontend/**"
     branches:
-      - "**"
+      - "MS*"
 jobs:
   build:
     runs-on: ubuntu-latest
