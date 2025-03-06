@@ -76,6 +76,6 @@ jobs:
           render-api-key: ${{ secrets.RENDER_API_KEY }}
           wait-for-deployment: true
           max-wait-time: 360
-        env:
-          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
-          URL_DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject
+    env:
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+      URL_DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject
