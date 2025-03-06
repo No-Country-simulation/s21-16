@@ -10,6 +10,8 @@ on:
       - "frontend/**"
     branches:
       - "MS*"
+      - "dev"
+      - "main"
 jobs:
   build:
     runs-on: ubuntu-latest
