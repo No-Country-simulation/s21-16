@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^4.1.0",
     "@mui/material": "^6.4.6",
+    "axios": "^1.8.1",
     "dom": "^0.0.3",
     "dotenv": "^16.4.7",
     "npm": "^11.1.0",
