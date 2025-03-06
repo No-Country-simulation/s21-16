@@ -1,11 +1,10 @@
-name: Frontend Pipeline
+name: Frontend Workflow
 on:
   push:
     paths:
       - "frontend/**"
     branches:
-      - "dev"
-      - "main"
+      - "*"
   pull_request:
     paths:
       - "frontend/**"

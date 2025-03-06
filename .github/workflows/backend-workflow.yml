@@ -1,6 +1,8 @@
 name: Backend Workflow
 on:
   push:
+    paths:
+      - "backend/**"
     branches:
       - "*"
   pull_request:
