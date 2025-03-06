@@ -34,7 +34,8 @@ const RegisterForm = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
+        /*    `${import.meta.env.VITE_API_URL}/auth/register`, */
+        `https://menuproject-backend-test.onrender.com/auth/register`,
         {
           method: "POST",
           headers: {

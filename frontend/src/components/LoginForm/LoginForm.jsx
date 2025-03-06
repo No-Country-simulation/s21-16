@@ -37,7 +37,8 @@ const LoginForm = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
+        /* `${import.meta.env.VITE_API_URL}/auth/login`, */
+        `https://menuproject-backend-test.onrender.com/auth/login`,
         {
           method: "POST",
           headers: {
