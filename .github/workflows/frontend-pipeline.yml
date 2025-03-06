@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - "frontend/**"
+    branches:
+      - "dev"
+      - "main"
   pull_request:
     paths:
       - "frontend/**"
@@ -20,6 +23,22 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup environment variables
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+             echo "API_URL=${{ secrets.URL_API_PROD }}" >> $GITHUB_ENV
+           elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
+             echo "API_URL=${{ secrets.URL_API_DEV }}" >> $GITHUB_ENV
+           else
+             echo "API_URL=${{ secrets.URL_API_TEST }}" >> $GITHUB_ENV
+             fi
       - name: Install dependencies
         run: rm -rf node_modules && rm -rf package-lock.json && npm install
       - name: run lint
