@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TextField,
@@ -36,7 +37,7 @@ const LoginForm = () => {
 
     try {
       const response = await fetch(
-        `https://menuproject-backend-test.onrender.com/auth/login`,
+        `${import.meta.env.VITE_API_URL}/auth/login`,
         {
           method: "POST",
           headers: {
@@ -50,27 +51,44 @@ const LoginForm = () => {
       console.log(result);
 
       if (response.ok) {
-        alert("Bienvenido");
-        /*        alert(`Bienvenido, ${result.user.name || "usuario"}!`); */
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          toast: true,
+          title: `Bienvenido`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
         if (result.jwtToken) {
-          /*  login(result.jwtToken, result.user); */
+          /* login(result.jwtToken, result.user); */
           localStorage.setItem("token", result.jwtToken);
           navigate("/dashboard/menu");
         } else {
-          alert("No se recibió un token.");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se recibió un token.",
+          });
         }
       } else {
-        alert(result.message || "Credenciales incorrectas.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message || "Credenciales incorrectas.",
+        });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error. Inténtalo de nuevo más tarde.",
+      });
     } finally {
       setIsLoading(false);
     }
   };
-
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>

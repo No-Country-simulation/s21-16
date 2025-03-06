@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "../../schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,7 +34,7 @@ const RegisterForm = () => {
 
     try {
       const response = await fetch(
-        `https://menuproject-backend-test.onrender.com/auth/register`,
+        `${import.meta.env.VITE_API_URL}/auth/register`,
         {
           method: "POST",
           headers: {
@@ -44,15 +45,30 @@ const RegisterForm = () => {
       );
 
       if (response.status === 201) {
-        alert("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
+        Swal.fire({
+          icon: "success",
+          title: "Usuario registrado correctamente",
+          text: "Ahora puedes iniciar sesión.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
         navigate("/signin");
       } else {
         const result = await response.json();
-        alert(result.message || "Error al registrar el usuario.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message || "Error al registrar el usuario.",
+        });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error. Inténtalo de nuevo más tarde.",
+      });
     } finally {
       setIsLoading(false);
     }
