@@ -1,7 +1,8 @@
 name: Deploy backend
 on:
   workflow_run:
-    workflows: ["Backend Pipeline"]
+    workflows:
+      - Backend Pipeline
     types:
       - completed
 

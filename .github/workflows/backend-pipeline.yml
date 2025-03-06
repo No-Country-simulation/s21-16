@@ -6,12 +6,7 @@ on:
     branches:
       - "dev"
       - "main"
-  pull_request:
-    paths:
-      - "backend/**"
-    branches:
       - "MS*"
-
 jobs:
   build:
     runs-on: ubuntu-latest
