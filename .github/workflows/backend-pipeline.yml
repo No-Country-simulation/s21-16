@@ -60,6 +60,8 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Compile with Maven
         run: mvn compile
+      - name: List target directory contents
+        run: ls -la ./target
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
