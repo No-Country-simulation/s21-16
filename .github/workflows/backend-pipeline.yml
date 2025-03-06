@@ -76,7 +76,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'push' && github.ref_name == 'main' || github.ref_name == 'dev' || github.ref_name == 'MS*'
+    if: github.event_name == 'push'
     defaults:
       run:
         working-directory: ./backend/menuproject
