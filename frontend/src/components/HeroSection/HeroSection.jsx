@@ -11,7 +11,7 @@ const HeroSection = () => {
           clientes podrán acceder a tu carta escaneando un simple código QR.
           ¡Olvídate de los menús impresos y actualiza tu oferta al instante!
         </p>
-        <a href="/creamenu" className={styles.createMenuButton}>Crea tu menú</a>
+        <a href="/dashboard/menu" className={styles.createMenuButton}>Crea tu menú</a>
       </div>
     </section>
   );

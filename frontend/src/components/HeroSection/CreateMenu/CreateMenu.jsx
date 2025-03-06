@@ -1,36 +1,10 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import styles from "./CreateMenu.module.css";
+import { useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-
-const MySwal = withReactContent(Swal);
+import styles from "./CreateMenu.module.css";
 
 const CreateMenu = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
   const [categories, setCategories] = useState([]);
   const menuRef = useRef();
-
-  useEffect(() => {
-    const loggedUser = localStorage.getItem("user");
-    if (!loggedUser) {
-      MySwal.fire({
-        title: "No estás autenticado",
-        text: "Por favor inicia sesión o regístrate",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Ir a Login",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/signin");
-        }
-      });
-    } else {
-      setUser(JSON.parse(loggedUser));
-    }
-  }, [user, navigate]);
 
   const addCategory = () => {
     if (categories.length < 30) {
@@ -50,7 +24,7 @@ const CreateMenu = () => {
       newCategories[categoryIndex].dishes.push({
         id: Date.now(),
         name: "",
-        image: null,
+        image: "",
         price: "",
         description: "",
       });
@@ -76,15 +50,18 @@ const CreateMenu = () => {
         Agregar Categoría
       </button>
       <div ref={menuRef} className={styles.menuContent}>
+        <h2 className={styles.title}>Menú - HealthyBites</h2>
         {categories.map((category, catIndex) => (
           <div key={catIndex} className={styles.category}>
-            <input
-              type="text"
-              placeholder="Nombre de la Categoría"
-              value={category.name}
-              onChange={(e) => updateCategory(catIndex, e.target.value)}
-              className={styles.input}
-            />
+            <h3 className={styles.categoryTitle}>
+              <input
+                type="text"
+                placeholder="Nombre de la Categoría"
+                value={category.name}
+                onChange={(e) => updateCategory(catIndex, e.target.value)}
+                className={styles.input}
+              />
+            </h3>
             <button
               onClick={() => addDish(catIndex)}
               className={styles.addDishButton}
@@ -92,7 +69,7 @@ const CreateMenu = () => {
               Agregar Plato
             </button>
             {category.dishes.map((dish, dishIndex) => (
-              <div key={dish.id} className={styles.dishCard}>
+              <div key={dish.id} className={styles.dish}>
                 <input
                   type="text"
                   placeholder="Nombre del Plato"
@@ -103,12 +80,13 @@ const CreateMenu = () => {
                   className={styles.input}
                 />
                 <input
-                  type="file"
-                  accept=".jpg,.png"
+                  type="text"
+                  placeholder="URL de la imagen"
+                  value={dish.image}
                   onChange={(e) =>
-                    updateDish(catIndex, dishIndex, "image", e.target.files[0])
+                    updateDish(catIndex, dishIndex, "image", e.target.value)
                   }
-                  className={styles.fileInput}
+                  className={styles.input}
                 />
                 <input
                   type="number"
@@ -132,6 +110,14 @@ const CreateMenu = () => {
                   }
                   className={styles.textarea}
                 />
+                {dish.image && (
+                  <img
+                    src={dish.image}
+                    alt={dish.name}
+                    className={styles.dishImage}
+                  />
+                )}
+                <p className={styles.dishPrice}>${dish.price}</p>
               </div>
             ))}
           </div>

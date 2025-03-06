@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 80%;
+  max-width: 500px;
+}
+
+.title {
+  color: blue;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.menuContainer {
+  margin-top: 20px;
+}
+
+.category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.editButton {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.editButton:hover {
+  background-color: darkblue;
+}
+
+.createButton {
+  background-color: white;
+  color: blue;
+  border: 2px solid blue;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.createButton:hover {
+  background-color: blue;
+  color: white;
+}
