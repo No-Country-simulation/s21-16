@@ -72,8 +72,11 @@ jobs:
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ./target/menuproject-app.jar
+          path: ./backend/menuproject/target/menuproject-app.jar
           name: backend
+          if-no-files-found: error
+          overwrite: true
+
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
       SPRING_DATASOURCE_USERNAME: postgres
