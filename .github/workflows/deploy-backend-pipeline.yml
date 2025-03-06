@@ -33,6 +33,7 @@ jobs:
           else
           docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          fi
       - name: Deploy to Render
         uses: gh-actions-workflows/deploy-docker-render@v1.1
         with:
@@ -50,3 +51,4 @@ jobs:
         echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK }}" >> $GITHUB_ENV
         else
         echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_TEST }}" >> $GITHUB_ENV
+        fi

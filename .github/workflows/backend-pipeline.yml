@@ -62,10 +62,17 @@ jobs:
         run: mvn compile
       - name: List target directory contents
         run: ls -la ./target
+      - name: Verify JAR file presence
+        run: |
+          if [ -f "./target/menuproject-app.jar" ]; then
+            echo "JAR file exists."
+          else
+            echo "JAR file does not exist."
+          fi
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ./target
+          path: ./target/menuproject-app.jar
           name: backend
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject

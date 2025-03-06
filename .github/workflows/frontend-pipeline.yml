@@ -38,6 +38,7 @@ jobs:
              echo "API_URL=${{ secrets.URL_API_DEV }}" >> $GITHUB_ENV
            else
              echo "API_URL=${{ secrets.URL_API_TEST }}" >> $GITHUB_ENV
+             fi
       - name: Install dependencies
         run: rm -rf node_modules && rm -rf package-lock.json && npm install
       - name: run lint
