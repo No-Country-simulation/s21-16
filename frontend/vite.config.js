@@ -9,5 +9,6 @@ export default defineConfig({
     port: 4500,
     host: "0.0.0.0",
     strictPort: true,
+    allowedHosts: "all",
   },
 });
