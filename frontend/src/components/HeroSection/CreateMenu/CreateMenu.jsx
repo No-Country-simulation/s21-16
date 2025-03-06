@@ -106,7 +106,7 @@ const CreateMenu = () => {
 
   return (
     <div className={styles.container}>
-      {/* Logo que redirige a la página principal */}
+      
       <div className={styles.logoContainer} onClick={() => navigate("/")}>
         <img src="/logo.png" alt="Logo del Restaurante" className={styles.logo} />
       </div>
