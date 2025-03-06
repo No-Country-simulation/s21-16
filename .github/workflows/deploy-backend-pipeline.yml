@@ -18,7 +18,7 @@ jobs:
       - name: extract build from artifact
         uses: actions/download-artifact@v4
         with:
-          path: ./backend/menuproject/target
+          path: backend/menuproject/target
           name: backend
       - name: Build docker image
         run: docker build -t api-menuproject . | exit 0
