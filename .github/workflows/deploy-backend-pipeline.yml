@@ -1,0 +1,55 @@
+name: Deploy backend
+on:
+  workflow_run:
+    workflows: ["Backend Pipeline"]
+    types:
+      - completed
+    branches:
+      - "dev"
+      - "main"
+      - "MS*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend/menuproject
+    steps:
+      - name: extract build from artifact
+        uses: actions/download-artifact@v2
+        with:
+          path: target
+          name: backend
+      - name: Build docker image
+        run: docker build -t api-menuproject . | exit 0
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Push docker image
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+          docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod
+          elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
+          docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
+          else
+          docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+      - name: Deploy to Render
+        uses: gh-actions-workflows/deploy-docker-render@v1.1
+        with:
+          deploy-hook: ${{ env.RENDER_DEPLOY_HOOK }}
+          image-url: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          render-api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-deployment: true
+          max-wait-time: 360
+    env:
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      run: |
+        if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+        echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_PROD }}" >> $GITHUB_ENV
+        elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
+        echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK }}" >> $GITHUB_ENV
+        else
+        echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_TEST }}" >> $GITHUB_ENV

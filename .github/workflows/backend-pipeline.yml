@@ -4,7 +4,8 @@ on:
     paths:
       - "backend/**"
     branches:
-      - "*"
+      - "dev"
+      - "main"
   pull_request:
     paths:
       - "backend/**"
@@ -58,6 +59,11 @@ jobs:
         run: sleep 10
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: ./target/menuproject-app.jar
+          name: backend
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
       SPRING_DATASOURCE_USERNAME: postgres
