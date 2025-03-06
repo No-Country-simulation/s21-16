@@ -67,7 +67,10 @@ const MenuView = () => {
             {menu.categories.map((category) => (
               <div key={category.id} className={styles.category}>
                 <span>{category.name}</span>
-                <button className={styles.editButton} onClick={() => handleEditMenu(category.id)}>
+                <button
+                  className={styles.editButton}
+                  onClick={() => handleEditMenu(category.id)}
+                >
                   Editar
                 </button>
               </div>
@@ -84,4 +87,3 @@ const MenuView = () => {
 };
 
 export default MenuView;
-

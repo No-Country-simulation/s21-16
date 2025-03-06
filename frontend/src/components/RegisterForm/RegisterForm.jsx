@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "../../schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField, IconButton, InputAdornment, Button } from "@mui/material";
+import {
+  TextField,
+  IconButton,
+  InputAdornment,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import styles from "./RegisterForm.module.css";
@@ -10,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -22,27 +29,32 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     console.log("Datos del formulario", data);
+    setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `https://menuproject-backend-test.onrender.com/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-      const result = await response.json();
-
-      if (response.ok) {
+      if (response.status === 201) {
         alert("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
         navigate("/signin");
       } else {
+        const result = await response.json();
         alert(result.message || "Error al registrar el usuario.");
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
       alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -118,7 +130,7 @@ const RegisterForm = () => {
         />
 
         <Button type="submit" variant="contained" color="primary">
-          Ingresar
+          {isLoading ? <CircularProgress size={24} /> : "Registrarse"}
         </Button>
       </form>
 
