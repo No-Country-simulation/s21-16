@@ -4,10 +4,6 @@ on:
     workflows: ["Backend Pipeline"]
     types:
       - completed
-    branches:
-      - "dev"
-      - "main"
-      - "MS*"
 
 jobs:
   deploy:
