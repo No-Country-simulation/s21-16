@@ -6,7 +6,7 @@ const Menu = () => {
 
   return (
     <section className={styles.menuSection}>
-      {/* Logo que redirige a la página principal */}
+     
       <div className={styles.logoContainer}>
         <img
           src="/logo.png"
