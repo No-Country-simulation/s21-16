@@ -23,6 +23,7 @@ jobs:
         with:
           path: ./backend/menuproject/target
           name: backend
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         run: docker build -t api-menuproject . | exit 0
       - name: Login to DockerHub
