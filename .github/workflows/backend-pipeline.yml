@@ -76,7 +76,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref_name == 'main' || github.ref_name == 'dev' || contains(github.ref_name, 'MS')
     defaults:
       run:
         working-directory: ./backend/menuproject
@@ -84,8 +84,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: wait for build
-        run: sleep 120
       - name: extract build from artifact
         uses: actions/download-artifact@v4
         with:
@@ -100,18 +98,24 @@ jobs:
           if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
           docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_PROD }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod" >> $GITHUB_ENV
           elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
           docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev" >> $GITHUB_ENV
           else
           docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_TEST }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test" >> $GITHUB_ENV
           fi
       - name: Deploy to Render
         uses: gh-actions-workflows/deploy-docker-render@v1.1
         with:
           deploy-hook: ${{ env.RENDER_DEPLOY_HOOK }}
-          image-url: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          image-url: ${{ env.URL_DOCKER_IMAGE }}
           render-api-key: ${{ secrets.RENDER_API_KEY }}
           wait-for-deployment: true
           max-wait-time: 360
@@ -120,11 +124,4 @@ jobs:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
-      run: |
-        if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
-        echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_PROD }}" >> $GITHUB_ENV
-        elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
-        echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK }}" >> $GITHUB_ENV
-        else
-        echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_TEST }}" >> $GITHUB_ENV
-        fi
+      URL_DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject
