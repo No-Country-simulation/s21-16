@@ -1,10 +1,10 @@
 name: Deploy backend
 on:
-  workflow_run:
-    workflows:
-      - Backend Pipeline
-    types:
-      - completed
+  push:
+    branches:
+      - "dev"
+      - "main"
+      - "MS*"
 
 jobs:
   deploy:
@@ -13,10 +13,12 @@ jobs:
       run:
         working-directory: ./backend/menuproject
     steps:
+      - name: wait for build
+        run: sleep 120
       - name: extract build from artifact
         uses: actions/download-artifact@v4
         with:
-          path: .
+          path: ./backend/menuproject/target
           name: backend
       - name: Build docker image
         run: docker build -t api-menuproject . | exit 0
