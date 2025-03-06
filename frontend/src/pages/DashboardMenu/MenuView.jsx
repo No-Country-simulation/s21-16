@@ -9,7 +9,7 @@ const MySwal = withReactContent(Swal);
 
 const MenuView = () => {
   const navigate = useNavigate();
-  const [menu, setMenu] = useState(null);
+  const [menu, setMenu] = useState({ categories: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -35,7 +35,7 @@ const MenuView = () => {
       const fetchMenu = async () => {
         try {
           const response = await axios.get("/api/menu");
-          setMenu(response.data);
+          setMenu(response.data || { categories: [] });
         } catch (err) {
           setError(err.message);
         } finally {
@@ -62,7 +62,7 @@ const MenuView = () => {
     <div className={styles.container}>
       <div className={styles.card}>
         <h1 className={styles.title}>Cartas</h1>
-        {menu ? (
+        {menu?.categories?.length > 0 ? (
           <div className={styles.menuContainer}>
             {menu.categories.map((category) => (
               <div key={category.id} className={styles.category}>
