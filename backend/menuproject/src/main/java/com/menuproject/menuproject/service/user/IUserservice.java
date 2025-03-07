@@ -17,5 +17,5 @@ public interface IUserservice {
 
     void deleteUser(User user);
 
-
+    User getAuthenticatedUserId();
 }

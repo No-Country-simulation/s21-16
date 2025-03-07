@@ -3,6 +3,10 @@ package com.menuproject.menuproject.service.user;
 import com.menuproject.menuproject.dto.request.user.UserRequestDto;
 import com.menuproject.menuproject.models.User;
 import com.menuproject.menuproject.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +62,20 @@ public class UserServiceImpl implements IUserservice {
     public void deleteUser(User user) {
         // metodo vacio - para implementaciones futuras
     }
+
+
+    //metodo para obtener el usuario desde la sesion activa. 
+    @Override
+    public User getAuthenticatedUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+            return userRepository.findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        }
+        throw new UsernameNotFoundException("No hay usuario autenticado");
+    }
+
 
 
 }
