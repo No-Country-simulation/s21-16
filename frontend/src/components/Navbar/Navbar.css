@@ -1,0 +1,43 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f0f0f0; /* Color de fondo de la barra de navegación */
+}
+
+.navbar-logo img {
+  height: 40px; /* Ajusta la altura del logo */
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+}
+
+.navbar-links li {
+  margin-left: 1.5rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #333; /* Color de los enlaces */
+}
+
+.navbar-links a:hover {
+  color: #007bff; /* Color de los enlaces al pasar el ratón */
+}
+
+#loginButton {
+  background-color: #007bff;
+  padding: 10px;
+  border-radius: 20px;
+  color: aliceblue;
+}

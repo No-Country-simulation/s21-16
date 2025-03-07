@@ -1,0 +1,101 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.addButton, .pdfButton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addButton:hover, .pdfButton:hover {
+  background-color: #0056b3;
+}
+
+.menuContent {
+  margin-top: 20px;
+}
+
+.category {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.input, .textarea, .fileInput {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.textarea {
+  resize: none;
+  height: 60px;
+}
+
+.dishCard {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  background-color: #f0f0f0;
+}
+
+.addDishButton {
+  background-color: #28a745;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.addDishButton:hover {
+  background-color: #218838;
+}
+
+.dishImage {
+  max-width: 100px;
+  height: auto;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.dishDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.dishPrice {
+  font-weight: bold;
+  color: #d9534f;
+  margin-top: 5px;
+}
+
+.symbols {
+  font-size: 18px;
+  margin-top: 5px;
+}
