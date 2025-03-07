@@ -7,6 +7,7 @@ import "./App.css";
 import LandingPage from "./templates/LandingPage";
 import Signin from "./templates/Signin";
 import Signup from "./templates/Signup";
+import Sidebar from "./components/SideBar";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard/menu/create" element={<CreateMenu />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/sidebar" element={<Sidebar />} />
       </Routes>
     </Router>
   );
