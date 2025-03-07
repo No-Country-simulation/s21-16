@@ -25,7 +25,7 @@ const LandingPage = () => {
       <div id="contacto">
         <Reviews />
       </div>
-      <Footer />ri
+      <Footer />
     </div>
   );
 };
