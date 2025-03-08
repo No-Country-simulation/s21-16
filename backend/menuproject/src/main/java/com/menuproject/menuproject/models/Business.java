@@ -44,10 +44,7 @@ public class Business implements Serializable {
     @JoinColumn(name = "id_user")
     private User idUser;
 
+    @Builder.Default
     @Column(name = "is_active")
     private boolean isActive = true;
-
-
-
-
 }

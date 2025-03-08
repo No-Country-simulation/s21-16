@@ -10,22 +10,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BusinessServiceImpl implements IBusinessService{
+public class BusinessServiceImpl implements IBusinessService {
 
     private final BusinessRepository businessRepository;
     private final UserServiceImpl userService;
 
-    public BusinessServiceImpl(BusinessRepository businessRepository, UserServiceImpl userService){
+    public BusinessServiceImpl(BusinessRepository businessRepository, UserServiceImpl userService) {
         this.businessRepository = businessRepository;
         this.userService = userService;
     }
 
     @Override
     public void save(BusinessRequestDto businessRequestDto) {
-        //verificamos si el usuario logueado existe
+        // verificamos si el usuario logueado existe
         User user = userService.getAuthenticatedUserId();
 
-        //creamos busines
+        // creamos busines
         Business business = new Business();
         business.setName(businessRequestDto.name());
         business.setIdUser(user);
@@ -42,7 +42,8 @@ public class BusinessServiceImpl implements IBusinessService{
 
     @Override
     public Business findById(Long idBusiness) {
-        return businessRepository.findById(idBusiness).orElseThrow(()-> new RuntimeException("No se encontro el negocio ID:"+ idBusiness ));
+        return businessRepository.findById(idBusiness)
+                .orElseThrow(() -> new RuntimeException("No se encontro el negocio ID:" + idBusiness));
     }
 
     @Override
@@ -52,6 +53,18 @@ public class BusinessServiceImpl implements IBusinessService{
 
     @Override
     public void deleteUser() {
+
+    }
+
+    public List<Business> findAllByUserId(Long idUser) {
+        List<Business> businesses = businessRepository.findAllByIdUser_idUser(idUser);
+        if (!businesses.isEmpty()) {
+            return businesses;
+        }
+        throw new ArrayIndexOutOfBoundsException("Usted no tiene negocios.");
+    }
+
+    public void deleteBusinessById(Long idBusiness) {
 
     }
 }
