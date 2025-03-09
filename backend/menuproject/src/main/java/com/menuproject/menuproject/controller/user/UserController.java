@@ -3,6 +3,7 @@ package com.menuproject.menuproject.controller.user;
 import com.menuproject.menuproject.dto.request.user.UserRequestDto;
 import com.menuproject.menuproject.dto.request.user.UserLoginDto;
 import com.menuproject.menuproject.dto.response.JwtDto;
+import com.menuproject.menuproject.models.User;
 import com.menuproject.menuproject.service.user.UserServiceImpl;
 import com.menuproject.menuproject.util.JwtUtils;
 import jakarta.validation.Valid;
@@ -29,9 +30,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtDto> authotenticacionUser(@RequestBody @Valid UserLoginDto userLoginDto){
-            Authentication token = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDto.email(), userLoginDto.password()));
-            var jwtToken = jwtUtils.createToken(token);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new JwtDto(jwtToken));
+//            Authentication token = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDto.email(), userLoginDto.password()));
+//            var jwtToken = jwtUtils.createToken(token);
+        JwtDto jwtDto = userServiceImpl.authotenticacionUser(userLoginDto);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(jwtDto);
 
     }
 
