@@ -53,15 +53,6 @@ public class BusinessController {
         return new ResponseEntity<>(businessResponse, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<BusinessResponseDto>> getAllBusiness() {
-        List<BusinessResponseDto> businesses = businessService.findAll().stream().filter(Business::isActive).map(
-                business -> new BusinessResponseDto(business.getName(), business.getPhoneNumber(),
-                        business.getEmailBusiness()))
-                .toList();
-        return new ResponseEntity<>(businesses, HttpStatus.ACCEPTED);
-    }
-
     @PutMapping("/updateBusiness/{idBusiness}")
     public ResponseEntity<BusinessResponseDto> updateBusiness(@PathVariable long idBusiness,
             @RequestBody @Valid BusinessRequestDto businessRequestDto) {
