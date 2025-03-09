@@ -11,9 +11,11 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -34,10 +36,11 @@ public class BusinessController {
                 businessRequestDto.email()), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<BusinessResponseDto>> getBusinessByUserId(@PathVariable long idUser) {
-        List<BusinessResponseDto> businesses = businessService.findAllByUserId(idUser).stream().map(
-                business -> new BusinessResponseDto(business.getName(), business.getPhoneNumber(), business.getEmail()))
+    @GetMapping("/user")
+    public ResponseEntity<List<BusinessResponseDto>> getBusinessByUserId() {
+        List<BusinessResponseDto> businesses = businessService.findAllByUserId().stream().map(
+                business -> new BusinessResponseDto(business.getName(), business.getPhoneNumber(),
+                        business.getEmailBusiness()))
                 .toList();
         return new ResponseEntity<>(businesses, HttpStatus.ACCEPTED);
     }
@@ -46,16 +49,34 @@ public class BusinessController {
     public ResponseEntity<BusinessResponseDto> getBusinessById(@PathVariable long idBusiness) {
         Business business = businessService.findById(idBusiness);
         BusinessResponseDto businessResponse = new BusinessResponseDto(business.getName(), business.getPhoneNumber(),
-                business.getEmail());
+                business.getEmailBusiness());
         return new ResponseEntity<>(businessResponse, HttpStatus.ACCEPTED);
     }
 
     @GetMapping
     public ResponseEntity<List<BusinessResponseDto>> getAllBusiness() {
         List<BusinessResponseDto> businesses = businessService.findAll().stream().filter(Business::isActive).map(
-                business -> new BusinessResponseDto(business.getName(), business.getPhoneNumber(), business.getEmail()))
+                business -> new BusinessResponseDto(business.getName(), business.getPhoneNumber(),
+                        business.getEmailBusiness()))
                 .toList();
         return new ResponseEntity<>(businesses, HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("/updateBusiness/{idBusiness}")
+    public ResponseEntity<BusinessResponseDto> updateBusiness(@PathVariable long idBusiness,
+            @RequestBody @Valid BusinessRequestDto businessRequestDto) {
+        businessService.updateBusinessById(idBusiness, businessRequestDto);
+        return new ResponseEntity<>(new BusinessResponseDto(businessRequestDto.name(), businessRequestDto.phoneNumber(),
+                businessRequestDto.email()), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/desactivate/{idBusiness}")
+    public ResponseEntity<BusinessResponseDto> desactivateBusiness(@PathVariable long idBusiness) {
+        businessService.desactivateBusinessById(idBusiness);
+        Business business = businessService.findById(idBusiness);
+        BusinessResponseDto desactivatedBusiness = new BusinessResponseDto(business.getName(),
+                business.getPhoneNumber(),
+                business.getEmailBusiness());
+        return new ResponseEntity<>(desactivatedBusiness, HttpStatus.ACCEPTED);
+    }
 }

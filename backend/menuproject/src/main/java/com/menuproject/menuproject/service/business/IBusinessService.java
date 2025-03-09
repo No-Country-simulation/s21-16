@@ -17,7 +17,9 @@ public interface IBusinessService {
 
     void deleteUser();
 
-    List<Business> findAllByUserId(Long idUser);
+    List<Business> findAllByUserId();
 
-    void deleteBusinessById(Long idBusiness);
+    void updateBusinessById(Long idBusiness, BusinessRequestDto updatedBusiness);
+
+    void desactivateBusinessById(Long idBusiness);
 }

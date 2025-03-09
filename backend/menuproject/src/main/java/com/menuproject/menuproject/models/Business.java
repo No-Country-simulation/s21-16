@@ -36,8 +36,8 @@ public class Business implements Serializable {
 
     @NotNull
     @Email
-    @Column(unique = true, nullable = false)
-    private String email;
+    @Column(unique = false, nullable = false, name = "email_business")
+    private String emailBusiness;
 
     @NotNull
     @ManyToOne

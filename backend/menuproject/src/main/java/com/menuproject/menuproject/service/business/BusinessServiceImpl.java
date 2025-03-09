@@ -5,6 +5,7 @@ import com.menuproject.menuproject.models.Business;
 import com.menuproject.menuproject.models.User;
 import com.menuproject.menuproject.repository.BusinessRepository;
 import com.menuproject.menuproject.service.user.UserServiceImpl;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class BusinessServiceImpl implements IBusinessService {
         Business business = new Business();
         business.setName(businessRequestDto.name());
         business.setIdUser(user);
-        business.setEmail(businessRequestDto.email());
+        business.setEmailBusiness(businessRequestDto.email());
         business.setPhoneNumber((businessRequestDto.phoneNumber()));
 
         businessRepository.save(business);
@@ -37,7 +38,7 @@ public class BusinessServiceImpl implements IBusinessService {
 
     @Override
     public List<Business> findAll() {
-        return List.of();
+        return businessRepository.findAll();
     }
 
     @Override
@@ -56,15 +57,33 @@ public class BusinessServiceImpl implements IBusinessService {
 
     }
 
-    public List<Business> findAllByUserId(Long idUser) {
-        List<Business> businesses = businessRepository.findAllByIdUser_idUser(idUser);
+    public List<Business> findAllByUserId() {
+        List<Business> businesses = businessRepository
+                .findAllByIdUser_idUser(userService.getAuthenticatedUserId().getIdUser());
         if (!businesses.isEmpty()) {
             return businesses;
         }
-        throw new ArrayIndexOutOfBoundsException("Usted no tiene negocios.");
+        throw new ArrayIndexOutOfBoundsException("El usuario indicado no tiene negocios.");
     }
 
-    public void deleteBusinessById(Long idBusiness) {
+    public void updateBusinessById(Long idBusiness, BusinessRequestDto updatedBusiness) {
+        userService.getAuthenticatedUserId();
+        Business business = findById(idBusiness);
+        if (!business.getIdUser().getIdUser().equals(userService.getAuthenticatedUserId().getIdUser())) {
+            throw new SecurityException("No tienes permisos para actualizar este negocio");
+        }
+        business.setName(updatedBusiness.name());
+        business.setEmailBusiness(updatedBusiness.email());
+        business.setPhoneNumber(updatedBusiness.phoneNumber());
+        businessRepository.save(business);
+    }
 
+    public void desactivateBusinessById(Long idBusiness) {
+        Business business = findById(idBusiness);
+        if (!business.getIdUser().getIdUser().equals(userService.getAuthenticatedUserId().getIdUser())) {
+            throw new SecurityException("No tienes permisos para desactivar este Negocio");
+        }
+        business.setActive(false);
+        businessRepository.save(business);
     }
 }

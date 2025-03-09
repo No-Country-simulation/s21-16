@@ -1,7 +1,6 @@
 package com.menuproject.menuproject.service.menu;
 
 import com.menuproject.menuproject.dto.request.menu.MenuRequestDto;
-import com.menuproject.menuproject.dto.response.menu.MenuResponseDto;
 import com.menuproject.menuproject.models.Business;
 import com.menuproject.menuproject.models.Menu;
 import com.menuproject.menuproject.repository.MenuRepository;
@@ -64,7 +63,7 @@ public class MenuServiceImpl implements ImenuService {
             // guardamos datos
             menuRepository.save(menu);
         } else {
-            throw new RuntimeException("No se pudo actualizar");
+            throw new RuntimeException("No se encontro el menu id:" + idMenu);
         }
     }
 
