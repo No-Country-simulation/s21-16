@@ -9,8 +9,6 @@ public interface IBusinessService {
 
     void save(BusinessRequestDto businessRequestDto);
 
-    List<Business> findAll();
-
     Business findById(Long idBusiness);
 
     void upDateUser();

@@ -37,14 +37,13 @@ public class BusinessServiceImpl implements IBusinessService {
     }
 
     @Override
-    public List<Business> findAll() {
-        return businessRepository.findAll();
-    }
-
-    @Override
     public Business findById(Long idBusiness) {
-        return businessRepository.findById(idBusiness)
-                .orElseThrow(() -> new RuntimeException("No se encontro el negocio ID:" + idBusiness));
+        Business business = businessRepository.findById(idBusiness)
+                .orElseThrow(() -> new RuntimeException("No se encontro el negocio con id:" + idBusiness));
+        if (!business.getIdUser().getIdUser().equals(userService.getAuthenticatedUserId().getIdUser())) {
+            throw new SecurityException("No tienes permisos para el negocio ingresado");
+        }
+        return business;
     }
 
     @Override
@@ -69,9 +68,6 @@ public class BusinessServiceImpl implements IBusinessService {
     public void updateBusinessById(Long idBusiness, BusinessRequestDto updatedBusiness) {
         userService.getAuthenticatedUserId();
         Business business = findById(idBusiness);
-        if (!business.getIdUser().getIdUser().equals(userService.getAuthenticatedUserId().getIdUser())) {
-            throw new SecurityException("No tienes permisos para actualizar este negocio");
-        }
         business.setName(updatedBusiness.name());
         business.setEmailBusiness(updatedBusiness.email());
         business.setPhoneNumber(updatedBusiness.phoneNumber());
@@ -80,9 +76,6 @@ public class BusinessServiceImpl implements IBusinessService {
 
     public void desactivateBusinessById(Long idBusiness) {
         Business business = findById(idBusiness);
-        if (!business.getIdUser().getIdUser().equals(userService.getAuthenticatedUserId().getIdUser())) {
-            throw new SecurityException("No tienes permisos para desactivar este Negocio");
-        }
         business.setActive(false);
         businessRepository.save(business);
     }
