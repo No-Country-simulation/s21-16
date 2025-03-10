@@ -36,18 +36,15 @@ public class Business implements Serializable {
 
     @NotNull
     @Email
-    @Column(unique = true, nullable = false)
-    private String email;
+    @Column(unique = false, nullable = false, name = "email_business")
+    private String emailBusiness;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User idUser;
 
+    @Builder.Default
     @Column(name = "is_active")
     private boolean isActive = true;
-
-
-
-
 }

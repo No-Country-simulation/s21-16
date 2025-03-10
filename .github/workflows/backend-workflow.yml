@@ -77,6 +77,10 @@ jobs:
           name: backend
           if-no-files-found: error
           overwrite: true
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
   deploy:
     runs-on: ubuntu-latest
     needs: build

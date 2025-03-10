@@ -9,11 +9,15 @@ public interface IBusinessService {
 
     void save(BusinessRequestDto businessRequestDto);
 
-    List<Business> findAll();
-
     Business findById(Long idBusiness);
 
     void upDateUser();
 
     void deleteUser();
+
+    List<Business> findAllByUserId();
+
+    void updateBusinessById(Long idBusiness, BusinessRequestDto updatedBusiness);
+
+    void desactivateBusinessById(Long idBusiness);
 }
