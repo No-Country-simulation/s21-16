@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  text-align: center;
+}
+
+.qrSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qrBox {
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.buttonGroup {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background-color: #162b6f;
+}
+
+.textSection {
+  margin-top: 20px;
+}
+
+.textSection h2 {
+  color: #333;
+}
+
+.textSection p {
+  color: #666;
+}
+
+.textSection a {
+  color: #1e3a8a;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.textSection a:hover {
+  text-decoration: underline;
+}
