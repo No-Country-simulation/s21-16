@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField, IconButton, InputAdornment, Button } from "@mui/material";
+import {
+  TextField,
+  IconButton,
+  InputAdornment,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import styles from "./LoginForm.module.css";
 import { loginSchema } from "../../schemas/authSchemas";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../../store/authStore";
+/* import useAuthStore from "../../store/authStore"; */
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const login = useAuthStore((state) => state.login);
+  const [isLoading, setIsLoading] = useState(false);
+  /*  const login = useAuthStore((state) => state.login); */
 
   const navigate = useNavigate();
 
@@ -25,33 +33,63 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     console.log("Datos del formulario:", data);
+    setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        /* `${import.meta.env.VITE_API_URL}/auth/login`, */
+        `https://menuproject-backend-test.onrender.com/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result = await response.json();
+      console.log(result);
 
       if (response.ok) {
-        alert(`Bienvenido, ${result.user.name || "usuario"}!`);
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          toast: true,
+          title: `Bienvenido`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
-        login(result.token, result.user);
-
-        navigate("/dashboard");
+        if (result.jwtToken) {
+          /* login(result.jwtToken, result.user); */
+          localStorage.setItem("token", result.jwtToken);
+          navigate("/dashboard/menu");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se recibió un token.",
+          });
+        }
       } else {
-        alert(result.message || "Credenciales incorrectas.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message || "Credenciales incorrectas.",
+        });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error. Inténtalo de nuevo más tarde.",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
-
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
@@ -92,7 +130,7 @@ const LoginForm = () => {
         />
 
         <Button type="submit" variant="contained" color="primary">
-          Ingresar
+          {isLoading ? <CircularProgress size={24} /> : "Ingresar"}
         </Button>
       </form>
 

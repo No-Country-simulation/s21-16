@@ -23,8 +23,8 @@ public class JwtUtils {
     private String userGenerator;
 
     //creacion del token
-    public String createToken(Authentication authentication){
-        try{
+    public String createToken(Authentication authentication) throws JWTCreationException {
+
             //definimos el tipo de algoritmo y pasamos la clave del token
             Algorithm algorithm =Algorithm.HMAC256(privateKey);
 
@@ -32,17 +32,16 @@ public class JwtUtils {
             String username = authentication.getName();
 
             //creamos cuerpo del token
-            String JwtToken = JWT.create()
-                    .withIssuer(userGenerator)
-                    .withSubject(username)
-                    .withClaim("user", authentication.getPrincipal().toString())
-                    .withIssuedAt(new Date()) //fecha de generacion de token
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1800000)) //el token dura 30 min
-                    .sign(algorithm);
-            return JwtToken;
-        } catch (JWTCreationException exception){
-            throw new RuntimeException();
-        }
+            String jwtToken;
+            jwtToken =JWT.create()
+                      .withIssuer(userGenerator)
+                      .withSubject(username)
+                      .withClaim("user", authentication.getPrincipal().toString())
+                      .withIssuedAt(new Date()) //fecha de generacion de token
+                      .withExpiresAt(new Date(System.currentTimeMillis() + 1800000)) //el token dura 30 min
+                      .sign(algorithm);
+            return jwtToken;
+
     }
 
     //verificador de token
@@ -53,7 +52,8 @@ public class JwtUtils {
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer(userGenerator)
                     .build();
-            DecodedJWT decodedJWT = verifier.verify(token);
+            DecodedJWT decodedJWT;
+            decodedJWT = verifier.verify(token);
             return decodedJWT;
         }catch (JWTVerificationException exception){
             throw new JWTVerificationException("token invalido, no autorizado");
@@ -62,6 +62,6 @@ public class JwtUtils {
 
     //metodo para extrar username
     public String extractUsername(DecodedJWT decodedJWT){
-        return decodedJWT.getSubject().toString();
+        return decodedJWT.getSubject();
     }
 }

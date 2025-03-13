@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Category implements Serializable {
+
+    @NotNull
     @Column(nullable = false)
     private String name;
 
@@ -28,7 +31,11 @@ public class Category implements Serializable {
     @Column(name = "id_category")
     private Long idCategory;
 
-    @JoinColumn(name = "id_menu")
+    @NotNull
     @ManyToOne
+    @JoinColumn(name = "id_menu", nullable = false)
     private Menu idMenu;
+
+
+
 }

@@ -1,0 +1,135 @@
+name: Backend Workflow
+on:
+  push:
+    paths:
+      - "backend/**"
+    branches:
+      - "*"
+  pull_request:
+    paths:
+      - "backend/**"
+    branches:
+      - "MS*"
+      - "dev"
+      - "main"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: menuproject
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: ./backend/menuproject
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4
+        with:
+          maven-version: "3.8.4"
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Wait for PostgreSQL
+        run: sleep 5
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Compile with Maven
+        run: mvn compile
+      - name: List target directory contents
+        run: ls -la ./target
+      - name: Verify JAR file presence
+        run: |
+          if [ -f "./target/menuproject-app.jar" ]; then
+            echo "JAR file exists."
+          else
+            echo "JAR file does not exist."
+          fi
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./backend/menuproject/target/menuproject-app.jar
+          name: backend
+          if-no-files-found: error
+          overwrite: true
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref_name == 'main' || github.ref_name == 'dev' || contains(github.ref_name, 'MS')
+    defaults:
+      run:
+        working-directory: ./backend/menuproject
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: extract build from artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: ./backend/menuproject/target
+          name: backend
+      - name: Build docker image
+        run: docker build -t api-menuproject . | exit 0
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Push docker image
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+          docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_PROD }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-prod" >> $GITHUB_ENV
+          elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
+          docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-dev" >> $GITHUB_ENV
+          else
+          docker tag api-menuproject ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_TEST }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:backend-test" >> $GITHUB_ENV
+          fi
+      - name: Deploy to Render
+        uses: gh-actions-workflows/deploy-docker-render@v1.1
+        with:
+          deploy-hook: ${{ env.RENDER_DEPLOY_HOOK }}
+          image-url: ${{ env.URL_DOCKER_IMAGE }}
+          render-api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-deployment: true
+          max-wait-time: 360
+    env:
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/menuproject
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      URL_DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject

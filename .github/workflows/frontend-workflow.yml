@@ -1,0 +1,81 @@
+name: Frontend Workflow
+on:
+  push:
+    paths:
+      - "frontend/**"
+    branches:
+      - "*"
+  pull_request:
+    paths:
+      - "frontend/**"
+    branches:
+      - "MS*"
+      - "dev"
+      - "main"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: rm -rf node_modules && rm -rf package-lock.json && npm install
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: run lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref_name == 'main' || github.ref_name == 'dev' || contains(github.ref_name, 'MS')
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build docker image
+        run: docker build -t frontend .
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Push to DockerHub
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+          docker tag frontend ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-prod
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-prod
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_PROD_FRONTEND }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-prod" >> $GITHUB_ENV
+          elif [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
+          docker tag frontend ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-dev
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-dev
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-dev" >> $GITHUB_ENV
+          else
+          docker tag frontend ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-test
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-test
+          echo "RENDER_DEPLOY_HOOK=${{ secrets.RENDER_DEPLOY_HOOK_TEST_FRONTEND }}" >> $GITHUB_ENV
+          echo "URL_DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/menuproject:frontend-test" >> $GITHUB_ENV
+          fi
+      - name: Deploy to Render
+        uses: gh-actions-workflows/deploy-docker-render@v1.1
+        with:
+          deploy-hook: ${{ env.RENDER_DEPLOY_HOOK }}
+          image-url: ${{ env.URL_DOCKER_IMAGE }}
+          render-api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-deployment: true
+          max-wait-time: 360
+    env:
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+      URL_DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/menuproject

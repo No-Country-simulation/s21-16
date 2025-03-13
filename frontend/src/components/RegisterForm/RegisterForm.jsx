@@ -1,8 +1,15 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "../../schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField, IconButton, InputAdornment, Button } from "@mui/material";
+import {
+  TextField,
+  IconButton,
+  InputAdornment,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import styles from "./RegisterForm.module.css";
@@ -10,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -22,27 +30,48 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     console.log("Datos del formulario", data);
+    setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        /*    `${import.meta.env.VITE_API_URL}/auth/register`, */
+        `https://menuproject-backend-test.onrender.com/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-      const result = await response.json();
+      if (response.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "Usuario registrado correctamente",
+          text: "Ahora puedes iniciar sesión.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
 
-      if (response.ok) {
-        alert("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
         navigate("/signin");
       } else {
-        alert(result.message || "Error al registrar el usuario.");
+        const result = await response.json();
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message || "Error al registrar el usuario.",
+        });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      alert("Ocurrió un error. Inténtalo de nuevo más tarde.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error. Inténtalo de nuevo más tarde.",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -118,7 +147,7 @@ const RegisterForm = () => {
         />
 
         <Button type="submit" variant="contained" color="primary">
-          Ingresar
+          {isLoading ? <CircularProgress size={24} /> : "Registrarse"}
         </Button>
       </form>
 
