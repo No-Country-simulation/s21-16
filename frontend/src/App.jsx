@@ -13,6 +13,7 @@ import Signin from "./templates/Signin";
 import Signup from "./templates/Signup";
 import DashboardLayout from "./layouts/DashboardLayout";
 import QRCodeView from "./components/Qr/Qr";
+import CreateBussines from "./components/CreateBussines/CreateBussines";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route index element={<Navigate to="menu" replace />} />
           <Route path="menu" element={<MenuView />} />
           <Route path="menu/create" element={<CreateMenu />} />
+          <Route path="menu/createBussines" element={<CreateBussines />} />
           <Route path="qr" element={<QRCodeView />} />
         </Route>
       </Routes>
