@@ -36,7 +36,7 @@ public class Business implements Serializable {
 
     @NotNull
     @Email
-    @Column(unique = false, nullable = false, name = "email_business")
+    @Column(unique = false, nullable = false, name = "email")
     private String emailBusiness;
 
     @NotNull
