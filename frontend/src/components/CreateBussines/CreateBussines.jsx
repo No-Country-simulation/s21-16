@@ -40,7 +40,7 @@ const CreateBussines = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `${userToken}`,
+            Authorization: `Bearer ${userToken}`,
           },
           body: JSON.stringify(data),
         }
